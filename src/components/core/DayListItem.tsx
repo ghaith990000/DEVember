@@ -1,9 +1,14 @@
-import React from 'react'
-import { Text, View, StyleSheet } from 'react-native'
-const DayListItem = () => {
+import React from 'react';
+import { Text, View, StyleSheet } from 'react-native';
+
+type DayListItem = {
+    day: number;
+}
+
+const DayListItem = ({day}: DayListItem) => {
   return (
     <View style={styles.box}>
-        <Text style={styles.text}>{item}</Text>
+        <Text style={styles.text}>{day}</Text>
     </View>
   )
 }
