@@ -43,6 +43,11 @@ const OnboardingScreen = () => {
     <SafeAreaView style={styles.page}>
         <Stack.Screen options={{headerShown: false}} />
         <View style={styles.pageContent}>
+            <View style={styles.stepIndicatorContainer}>
+                {onboardingSteps.map((step, index) => (
+                    <View style={[styles.stepIndicator, {backgroundColor: index === screenIndex ? '#CEF202' : 'gray'}]} />
+                ))}
+            </View>
             <FontAwesome5 style={styles.image} name={data.icon} size={150} color="#CEF202" />
             <View style={styles.footer}>
                 <Text style={styles.title}>{data.title}</Text>
@@ -115,6 +120,16 @@ const styles = StyleSheet.create({
         fontSize: 16,
         padding: 15,
         paddingHorizontal: 25,
+    },
+    stepIndicatorContainer: {
+        flexDirection: 'row',
+        gap: 7
+    },
+    stepIndicator: {
+        flex: 1,
+        height: 5,
+        backgroundColor: 'gray',
+        borderRadius: 10
     }
 })
 
