@@ -1,22 +1,57 @@
 import { View, Text, StyleSheet, SafeAreaView, Pressable } from 'react-native'
-import React from 'react';
-import { Stack } from 'expo-router';
+import React, { useState } from 'react';
+import { Stack, router } from 'expo-router';
 import { FontAwesome5 } from '@expo/vector-icons';
 
+const onboardingSteps = [
+    {
+        icon: "snowflake",
+        title: "Welcome #DEVemeber",
+        description: "Daily React Native tutorials during December",
+    },
+    {
+        icon: "people-arrows",
+        title: "Learn and grow together",
+        description: "Learn by building 24 projects with React Native and Expo",
+    },
+    {
+        icon: "people-arrows",
+        title: "Education for Children",
+        description: "Contribute to the fundraiser \"Education for Children to help Save the Children in their effort of providing education to every child",
+    },
+]
+
 const OnboardingScreen = () => {
+    const [screenIndex, setScreenIndex] = useState(0);
+
+    const data = onboardingSteps[screenIndex];
+
+    const onContinue = () => {
+        const isLastScreen = screenIndex === onboardingSteps.length - 1;
+        if(isLastScreen){
+            endOnboarding();
+        }else{
+            setScreenIndex(screenIndex + 1);
+        }
+    }
+
+    const endOnboarding = () => {
+        setScreenIndex(0);
+        router.back();
+    }
   return (
     <SafeAreaView style={styles.page}>
         <Stack.Screen options={{headerShown: false}} />
         <View style={styles.pageContent}>
-            <FontAwesome5 style={styles.image} name="people-arrows" size={150} color="#CEF202" />
+            <FontAwesome5 style={styles.image} name={data.icon} size={150} color="#CEF202" />
             <View style={styles.footer}>
-                <Text style={styles.title}>Track every transaction</Text>
+                <Text style={styles.title}>{data.title}</Text>
                 <Text style={styles.description}>
-                    Monitor your spending and contribution, ensuring every penny aligns with your family's aspirations
+                    {data.description}
                 </Text>
                 <View style={styles.buttonsRow}>
-                    <Text style={styles.buttonText}>Skip</Text>
-                    <Pressable style={styles.button}>
+                    <Text onPress={endOnboarding} style={styles.buttonText}>Skip</Text>
+                    <Pressable onPress={onContinue} style={styles.button}>
                         <Text style={styles.buttonText}>Continue</Text>
                     </Pressable>
                 </View>
