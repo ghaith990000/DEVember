@@ -79,11 +79,11 @@ const OnboardingScreen = () => {
         <GestureDetector gesture={swipes}>
             <View style={styles.pageContent} key={data.id}>
                 <Animated.View entering={FadeIn} exiting={FadeOut}>
-                    <FontAwesome5 style={styles.image} name={data.icon} size={150} color="#CEF202" />
+                    <FontAwesome5 style={styles.image} name={data.icon} size={180} color="#CEF202" />
                 </Animated.View>
                 <View style={styles.footer}>
                     <Animated.Text entering={SlideInRight.duration(500)} exiting={SlideOutLeft} style={styles.title}>{data.title}</Animated.Text>
-                    <Animated.Text entering={SlideInRight.delay(150)} exiting={SlideOutLeft.delay(150)} style={styles.description}>
+                    <Animated.Text entering={SlideInRight.delay(50)} exiting={SlideOutLeft} style={styles.description}>
                         {data.description}
                     </Animated.Text>
                     <View style={styles.buttonsRow}>
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     image: {
         alignSelf: 'center',
         margin: 20,
-        marginTop: 50
+        marginTop: 70
     },
     title: {
         color: "#FDFDFD",
@@ -157,7 +157,9 @@ const styles = StyleSheet.create({
     },
     stepIndicatorContainer: {
         flexDirection: 'row',
-        gap: 7
+        gap: 7,
+        marginHorizontal: 10,
+        marginTop: 15
     },
     stepIndicator: {
         flex: 1,
