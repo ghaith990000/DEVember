@@ -13,7 +13,6 @@ SplashScreen.preventAutoHideAsync();
 const days = [...Array(24)].map((val, index) => index + 1);
 
 export default function HomeScreen() {
-  
   return (
     <View style={styles.container}>
       <FlatList

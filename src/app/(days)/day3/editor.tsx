@@ -16,7 +16,7 @@ const EditorScreen = () => {
   return (
     <View style={styles.page}>
         <View style={styles.tabsContainer}>
-            <Pressable onPress={()=>setTab('edit')} style={[styles.tab, {backgroundColor: tab=== 'edit' ? 'blue' : 'white', }]}>
+            <Pressable onPress={()=>setTab('edit')} style={[styles.tab, {backgroundColor: tab === "edit" ? 'red' : 'white'}]}>
                 <Text style={[styles.tabText, {color: tab === 'edit' ? 'white' : 'black'}]}>Edit</Text>
             </Pressable>
             <Pressable onPress={()=>setTab('preview')} style={[styles.tab, {backgroundColor: tab === 'preview' ? 'blue' : 'white'}]}>
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
         borderColor: 'gray',
         borderWidth: 1,
         borderRadius: 10,
-        alignItems: 'center'
+        alignItems: 'center',
     },
     tabText: {
         fontFamily: 'InterBold',
