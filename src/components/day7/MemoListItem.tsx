@@ -3,6 +3,7 @@ import {FontAwesome5} from '@expo/vector-icons'
 import React, { useCallback, useEffect, useState } from 'react'
 import { AVPlaybackStatus, Audio } from 'expo-av';
 import { Sound } from 'expo-av/build/Audio';
+import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 const MemoListItem = ({uri}: {uri: string}) => {
     const [sound, setSound] = useState<Sound>();
@@ -10,7 +11,7 @@ const MemoListItem = ({uri}: {uri: string}) => {
 
     async function loadSound(){
         console.log('Loading Sound');
-        const { sound } = await Audio.Sound.createAsync({uri}, undefined, onPlayBackStatusUpdate);
+        const { sound } = await Audio.Sound.createAsync({uri}, {progressUpdateIntervalMillis: 100}, onPlayBackStatusUpdate);
         setSound(sound);
     }
 
@@ -53,10 +54,23 @@ const MemoListItem = ({uri}: {uri: string}) => {
             }
         : undefined;
     }, [sound]);
+
+    const formatMillis = (millis: number) => {
+        const minutes = Math.floor(millis / (1000 * 60));
+        const seconds = Math.floor((millis % (1000 * 60)) / 1000);
+
+        return `${minutes}:${seconds < 10 ? "0" : ''}${seconds}`;
+    }
+
     const isPlaying = status?.isLoaded ? status.isPlaying : false;
     const position = status?.isLoaded ? status.positionMillis : 0;
     const duration = status?.isLoaded ? status.durationMillis: 1;
     const progress = position / duration;
+
+    const animatedIndicatorStyle = useAnimatedStyle(() => ({
+        left: `${progress * 100}%`,
+        // left: withTiming(`${progress * 100}%`, {duration: 100}),
+    }))
     return (
         <View style={styles.container}>
             <FontAwesome5 onPress={playSound} name={isPlaying ? 'pause' : 'play'} size={20} color={'gray'} />
@@ -64,7 +78,10 @@ const MemoListItem = ({uri}: {uri: string}) => {
                 <View style={styles.playbackBackground}>
 
                 </View>
-                <View style={[styles.playbackIndicator, {left: `${progress * 100}%`}]}></View>
+                <Animated.View style={[styles.playbackIndicator, animatedIndicatorStyle ]}></Animated.View>
+                <Text style={{position: 'absolute', right: 0, bottom: 0, color: 'gray', fontFamily: 'Inter', fontSize: 12}}>
+                   {formatMillis(position || 0)} / {formatMillis(duration || 0)}
+                </Text>
             </View>
         </View>
     )
@@ -76,7 +93,8 @@ const styles = StyleSheet.create({
         margin: 5,
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 15,
+        paddingHorizontal: 15,
+        paddingVertical: 5,
         borderRadius: 10,
         gap: 15,
 
@@ -94,7 +112,7 @@ const styles = StyleSheet.create({
     playbackContainer: {
         flex: 1,
         height: 50,
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     playbackBackground: {
         height: 3,

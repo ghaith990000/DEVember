@@ -26,6 +26,10 @@ export default function MemosScreen() {
       );
       setRecording(recording);
       console.log('Recording started');
+
+      recording.setOnRecordingStatusUpdate((status) => {
+        console.log(status.metering);
+      })
     } catch (err) {
       console.error('Failed to start recording', err);
     }
@@ -59,11 +63,11 @@ export default function MemosScreen() {
     <View style={styles.container}>
         <FlatList data={memos} renderItem={({item}) => <MemoListItem uri={item} />}  />
         <View style={styles.footer}>
-            <Pressable style={styles.recordButton}
-                onPress={recording ? stopRecording : startRecording}
-            >
-                <Animated.View style={[styles.redCircle, animatedRedCircle]}></Animated.View>
-            </Pressable>
+          <Pressable style={styles.recordButton}
+              onPress={recording ? stopRecording : startRecording}
+          >
+              <Animated.View style={[styles.redCircle, animatedRedCircle]}></Animated.View>
+          </Pressable>
         </View>
       {/* <Button
         title={recording ? 'Stop Recording' : 'Start Recording'}
@@ -94,12 +98,16 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     padding: 3,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: 'white'
   },
   redCircle: {
     backgroundColor: 'orangered',
     aspectRatio: 1,
     borderRadius: 30,
 
+  },
+  recordWave: {
+    backgroundColor: '#FF000055', 
   }
 });
